@@ -30,6 +30,7 @@ import FlightBooking.Model.Passenger;
 import FlightBooking.Repository.BookingRepository;
 import FlightBooking.Service.BookingService;
 import FlightBooking.Service.ExceptionService;
+import FlightBooking.rabbitmq.BookingMessageConfiq;
 
 
 
@@ -67,6 +68,7 @@ public class BookingController {
 	
 	@PostMapping("/flightbooking")
 	public String addBooking(@RequestBody Booking booking) {
+		String m="Booking confirmed";
 		booking.setTotal_amount(setTotal_amount(booking));
 		boolean present= bookingservice.findById(booking.booking_id);
 		if(present==false) {
@@ -74,7 +76,7 @@ public class BookingController {
 			log.info("Making the booking with pnr: " +booking.getBooking_id());
 			bookingservice.addBookings(booking);
 //			BookingStatus bookingstatus=new BookingStatus("PROCESS","Booking Confirmation sucessfully ");            
-//			template.convertAndSend(BookingMessageConfig.EXCHANGE,BookingMessageConfig.ROUTING_KEY,bookingstatus);
+		template.convertAndSend(BookingMessageConfiq.EXCHANGE,BookingMessageConfiq.ROUNTING_KEY,m);
 			
 		 return "Booked Successfully, Your booking id is "+booking.getBooking_id();
 		}
