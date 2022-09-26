@@ -86,7 +86,7 @@ public class CheckinController {
 		public String confirm()
 		{
 			 boolean present=service.findById(c.getBookingId());
-			 if(present==false) {
+			 if(present== false) {
 			service.confirmation(c);
 			CheckInStatus checkinstatus=new CheckInStatus("PROCESS","Check-In Confirmation sucessfully ");            
 			template.convertAndSend(MessagingConfiq.EXCHANGE,MessagingConfiq.ROUTING_KEY,checkinstatus);
